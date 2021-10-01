@@ -23,6 +23,10 @@ app.all('*', (req, res, next) => {
 
 // START ENDPOINTS
 // ROOT
+app.get('/', (req, res)=>{
+    let directions = "<p>This is the root route</p><p>With get method you can write in the direction bar: /date , /fullname , /city , /school</p><p>And with post method you can write in the direction bar: /add , /squarearea , /trianglearea</p>"
+    res.send(directions);
+})
 
 // Date
 app.get('/date', (req, res) => {
@@ -54,41 +58,61 @@ app.get('/school', (req, res) => {
 // ADD
 app.post('/add', (req, res) => {
     let varsforAdd = req.body;
+    let numbertoAdd = 0;
     varsforAdd = Object.values(varsforAdd)
-    res.send(typeof varsforAdd)
     varsforAdd.forEach(number => {
-        res.send(number)
-        // try {
-        //     element += element
-        // } 
-        // catch (error) {
-        //     res.send('some of the vars are not a number')
-        // }   
+        numbertoAdd = numbertoAdd + parseFloat(number)
     });
-    // res.send('The additions of given numbers is: ' + element)
+    if (numbertoAdd){
+        res.send('The additions of given numbers is: ' + numbertoAdd)
+    }else{
+        res.send('Some of the vars are not a number')
+    }
+    
 })
+
 // MULTIPLICATION
 app.post('/timesby', (req, res) => {
     let varsforMult = req.body;
-    varsforMult = varsforMult.values()
-    varsforMult.forEach(element => {
-        try {
-            element += element
-        } 
-        catch (error) {
-            res.send('some of the vars are not a number')
-        }   
+    let numbertoMultiply = 1
+    varsforMult = Object.values(varsforMult)
+    varsforMult.forEach(number => {
+        numbertoMultiply = numbertoMultiply * number
     });
-    res.send('The multiplication of given numbers is: ' + element)
+
+    if (numbertoMultiply){
+        res.send('The multiplication of given numbers is: ' + numbertoMultiply)
+    }else{
+        res.send('Some of the vars are not a number')
+    }
 })
+
 // SQUARE AREA
 app.post('/squarearea', (req, res) => {
     let varsforSquareArea = req.body
+    let calc = varsforSquareArea.side1 * varsforSquareArea.side2
 
+    if (calc){
+        if (varsforSquareArea.side1 === varsforSquareArea.side2) {
+            res.send('This is the area of th square: ' + calc)
+        }else{
+            res.send('This is not a square, here is the area: ' + calc)
+        }
+    }else{
+        res.send('Some of the vars are not a number')
+    }
 })
+
 // TRIANGLE AREA
 app.post('/trianglearea', (req, res) => {
-    let varsforTriangleArea = req.body
+    let varsforTriArea = req.body
+    let calc = (varsforTriArea.base * varsforTriArea.height)/2
+    if (calc){
+        res.send('This is the area of the triangle: ' + calc)
+    }else{
+        res.send('Some of the vars are not a number')
+    }
+    
 })
 
 // END ENDPOINTS
